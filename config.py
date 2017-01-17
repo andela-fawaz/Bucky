@@ -7,7 +7,7 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'your-own-secret-key'
-    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    SERVER_NAME = '127.0.0.1'
 
     @staticmethod
     def init_app(app):
