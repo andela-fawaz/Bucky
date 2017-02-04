@@ -3,11 +3,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config(object):
-    DEBUG = False
+    DEBUG = True
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'your-own-secret-key'
-    SERVER_NAME = '127.0.0.1'
+    SERVER_NAME = '127.0.0.1:5000'
 
     @staticmethod
     def init_app(app):
@@ -16,14 +16,12 @@ class Config(object):
 
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
-    DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
 
 class StagingConfig(Config):
     DEVELOPMENT = True
-    DEBUG = True
 
 
 class ProductionConfig(Config):
