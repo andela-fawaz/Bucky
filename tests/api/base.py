@@ -1,5 +1,6 @@
 import unittest
 import json
+from base64 import b64encode
 from flask import url_for
 from bucky import create_app, db
 from bucky.models import User, BucketList, Item
@@ -64,7 +65,7 @@ class BaseTestCase(unittest.TestCase):
             title="Hawaii",
             description="travel to the special island in the USA.",
             status="done",
-            bucketlist_id=2
+            bucketlist_id=3
         )
 
         db.session.bulk_save_objects([
@@ -81,15 +82,22 @@ class BaseTestCase(unittest.TestCase):
         response = self.client.post(
             url_for('api.login'),
             data=json.dumps({
-                'username': 'fawazfarid',
-                'password': 'fawaz123',
+                'email': 'fawwazally@gmail.com',
+                'password': 'fawaz123'
             }),
-            content_type='application/json',
+            content_type='application/json'
         )
-        output = json.loads(response.data)
-        token = output.get("token").encode("ascii")
-        return {"token": token}
+        output = json.loads(response.data.decode('utf-8'))
+        token = output.get("token")
+        return token
+
+    def get_api_headers(self, email, password):
+        return {
+            'Authorization': 'Basic ' + b64encode(
+                (email + ':' + password).encode('utf-8')).decode('utf-8'),
+            'Content-Type': 'application/json'
+        }
 
     def get_invalid_token(self):
         """Returns an invalid token for testing purposes"""
-        return {'token': 'invalidtok123'}
+        return 'invalidtok123'

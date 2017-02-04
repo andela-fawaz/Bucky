@@ -7,11 +7,9 @@ class TestAuth(BaseTestCase):
     def test_404(self):
         """Tests invalid url or non-existing route returns 404 error"""
         response = self.client.get(
-            '/wrong/url',
+            '/api/v1.0/wrong/url',
         )
         self.assertEqual(response.status_code, 404)
-        output = json.loads(response.data)
-        self.assertEqual(output['error'], 'Resource not found.')
 
     def test_register_user_success(self):
         """Tests User is registered successfully"""
@@ -24,7 +22,7 @@ class TestAuth(BaseTestCase):
         self.assertEqual(response.status_code, 201)
 
         output = json.loads(response.data)
-        self.assertIn(b'token', output)
+        self.assertEqual('createuser', output['username'])
 
     def test_register_with_same_email(self):
         """
@@ -33,7 +31,7 @@ class TestAuth(BaseTestCase):
         """
         response = self.client.post(url_for('api.register'), data=json.dumps({
             'username': 'createuser2',
-            'email': 'createuser@gmail.com',
+            'email': 'test@gmail.com',
             'password': 'test-password',
         }), content_type='application/json')
 
@@ -47,7 +45,7 @@ class TestAuth(BaseTestCase):
         Note: username should be a unique field in the database.
         """
         response = self.client.post(url_for('api.register'), data=json.dumps({
-            'username': 'createuser',
+            'username': 'test',
             'email': 'createuser2@gmail.com',
             'password': 'test-password',
         }), content_type='application/json')
@@ -63,7 +61,7 @@ class TestAuth(BaseTestCase):
         response = self.client.post(
             url_for('api.login'),
             data=json.dumps({
-                'username': 'test',
+                'email': 'test@gmail.com',
                 'password': 'test-password',
             }),
             content_type='application/json'
@@ -75,7 +73,7 @@ class TestAuth(BaseTestCase):
 
     def test_invalid_login_credentials(self):
         """
-        Tests loggin in with invalid credentials returns errors.
+        Tests login in with invalid credentials returns errors.
         tests that an error is returned when trying to log in with
         invalid password or no password.
         or with a non-existing username or when username is not provided.
@@ -83,16 +81,16 @@ class TestAuth(BaseTestCase):
 
         # test with Invalid password
         response = self.client.post(url_for('api.login'), data=json.dumps({
-            'username': 'test',
+            'email': 'test@gmail.com',
             'password': 'invalid-password',
         }), content_type='application/json')
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 401)
         output = json.loads(response.data)
         self.assertIn('error', output)
 
         # password not provided
         response = self.client.post(url_for('api.login'), data=json.dumps({
-            'username': 'test',
+            'email': 'test@gmail.com',
         }), content_type='application/json')
         self.assertEqual(response.status_code, 400)
         output = json.loads(response.data)
@@ -108,9 +106,9 @@ class TestAuth(BaseTestCase):
 
         # Username does not exist
         response = self.client.post(url_for('api.login'), data=json.dumps({
-            'username': 'fake-tester',
+            'email': 'fake-tester@gmail.com',
             'password': 'test-password',
         }), content_type='application/json')
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 401)
         output = json.loads(response.data)
         self.assertIn('error', output)
