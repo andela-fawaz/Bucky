@@ -20,7 +20,6 @@ if os.path.exists('.env'):
             os.environ[var[0]] = var[1]
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 
 manager = Manager(app)
 migrate = Migrate(app, db)
