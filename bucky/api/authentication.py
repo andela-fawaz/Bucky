@@ -57,7 +57,7 @@ def register_routes(api):
         password = request.json.get('password')
 
         if username is None or password is None or email is None:
-            return ValidationError
+            raise ValidationError("email and password required.")
         # check if username exists
         if User.query.filter_by(username=username).first() is not None:
             return bad_request('Username Exists!')
