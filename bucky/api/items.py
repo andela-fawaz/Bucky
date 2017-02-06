@@ -52,8 +52,15 @@ def register_routes(api):
 
         item = bucketlist.items.filter_by(id=item_id).first_or_404()
 
-        item.title = request.json.get('title')
-        item.description = request.json.get('description')
+        if request.json.get('title') or request.json.get('title') != "":
+            item.title = request.json.get('title')
+
+        if request.json.get('description') or\
+           request.json.get('description') != "":
+            item.description = request.json.get('description')
+
+        if request.json.get('status') or request.json.get('status') != "":
+            item.status = request.json.get('status')
 
         db.session.add(item)
         db.session.commit()
