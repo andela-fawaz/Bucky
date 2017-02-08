@@ -1,10 +1,9 @@
-# from functools import wraps
 from flask import jsonify, g, request
 from flask_httpauth import HTTPBasicAuth
-from ..models import User
-from ..exceptions import ValidationError
-from .errors import bad_request, unauthorized
-from .. import db
+from bucky import db
+from bucky.models import User
+from bucky.exceptions import ValidationError
+from errors import bad_request, unauthorized
 
 
 auth = HTTPBasicAuth()
@@ -14,7 +13,7 @@ auth = HTTPBasicAuth()
 def verify_password(email_or_token, password):
     if password == '':
         g.current_user = User.verify_auth_token(email_or_token)
-        return g.current_user is not None
+        return g.current_user
     user = User.query.filter_by(email=email_or_token).first()
     if not user:
         return False
@@ -34,7 +33,7 @@ def register_routes(api):
         email = request.json.get('email')
         password = request.json.get('password')
 
-        if email is None or email == '' or password is None or password == '':
+        if not email or not password:
             raise ValidationError('email and password required.')
         # fetch the user data
         user = User.query.filter_by(email=email).first()
@@ -56,8 +55,8 @@ def register_routes(api):
         email = request.json.get('email')
         password = request.json.get('password')
 
-        if username is None or password is None or email is None:
-            raise ValidationError("email and password required.")
+        if not username or not password or not email:
+            raise ValidationError("username, email and password required.")
         # check if username exists
         if User.query.filter_by(username=username).first() is not None:
             return bad_request('Username Exists!')
