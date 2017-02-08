@@ -1,4 +1,9 @@
-# Bucky
+[![Build Status](https://travis-ci.org/andela-fawaz/bucky.svg?branch=develop)](https://travis-ci.org/andela-fawaz/bucky)
+[![Coverage Status](https://coveralls.io/repos/github/andela-fawaz/bucky/badge.svg?branch=develop)](https://coveralls.io/github/andela-fawaz/bucky?branch=develop)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
+[![Fawaz Farid](https://img.shields.io/badge/Fawaz%20Farid-Checkpoint2-orange.svg)]()
+
+# Bucky API
 Bucky is a RESTful bucket list API built with `Flask`. A bucket list is a list of things, experiences or achievements that a person hopes to have or accomplish during their lifetime.
 This API allows a user to create and manage his/her bucket lists and their respective items. The APi implements token-based Authentication.
 
