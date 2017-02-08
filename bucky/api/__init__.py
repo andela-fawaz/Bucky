@@ -1,5 +1,8 @@
 from flask import Blueprint
-from . import bucketlists, items, errors, authentication
+import bucketlists
+import items
+import errors
+import authentication
 
 
 def create_api():

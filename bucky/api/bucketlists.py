@@ -1,8 +1,8 @@
 from flask import jsonify, request, g, url_for
-from .authentication import auth
-from .. import db
-from ..models import BucketList
-from .errors import forbidden, bad_request
+from authentication import auth
+from bucky import db
+from bucky.models import BucketList
+from errors import forbidden, bad_request
 
 
 def register_routes(api):
@@ -55,8 +55,11 @@ def register_routes(api):
         if g.current_user.id != bucketlist.created_by:
             return forbidden('Access to resource forbidden.')
 
-        bucketlist.title = request.json.get('title')
-        bucketlist.description = request.json.get('description')
+        if request.json.get('title'):
+            bucketlist.title = request.json.get('title')
+
+        if request.json.get('description'):
+            bucketlist.description = request.json.get('description')
 
         db.session.add(bucketlist)
         db.session.commit()

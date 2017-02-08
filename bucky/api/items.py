@@ -1,8 +1,8 @@
 from flask import jsonify, request, g, url_for
-from .. import db
-from ..models import BucketList, Item
-from .authentication import auth
-from .errors import forbidden
+from bucky import db
+from bucky.models import BucketList, Item
+from authentication import auth
+from errors import forbidden
 
 
 def register_routes(api):
@@ -52,14 +52,13 @@ def register_routes(api):
 
         item = bucketlist.items.filter_by(id=item_id).first_or_404()
 
-        if request.json.get('title') or request.json.get('title') != "":
+        if request.json.get('title'):
             item.title = request.json.get('title')
 
-        if request.json.get('description') or\
-           request.json.get('description') != "":
+        if request.json.get('description'):
             item.description = request.json.get('description')
 
-        if request.json.get('status') or request.json.get('status') != "":
+        if request.json.get('status'):
             item.status = request.json.get('status')
 
         db.session.add(item)

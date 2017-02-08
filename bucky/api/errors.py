@@ -1,5 +1,5 @@
 from flask import jsonify, make_response
-from ..exceptions import ValidationError
+from bucky.exceptions import ValidationError
 
 
 def bad_request(message):
