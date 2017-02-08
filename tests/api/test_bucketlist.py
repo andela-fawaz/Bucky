@@ -33,7 +33,7 @@ class BucketListTestCase(BaseTestCase):
         output = json.loads(response.data)
         self.assertEqual(output['message'], "Authentication Error.")
 
-    def test_unauthorized_access_resource(self):
+    def test_unauthorized_change_resource(self):
         """ Test that users CAN view other's bucketlist but CANNOT,
         change another user's bucket list
         It Attempts to change username=test's bucket list
