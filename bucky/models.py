@@ -46,9 +46,11 @@ class User(db.Model):
         """
         Generating an authentication token that expires in 20 minutes
         """
-        s = Serializer(current_app.config['SECRET_KEY'],
-                       expires_in=expiration)
-        return s.dumps({'id': self.id})
+        serializer = Serializer(
+            current_app.config['SECRET_KEY'],
+            expires_in=expiration
+        )
+        return serializer.dumps({'id': self.id})
 
     @staticmethod
     def verify_auth_token(token):
@@ -57,10 +59,10 @@ class User(db.Model):
             data = serializer.loads(token)
         except SignatureExpired:
             """When token is valid but expired """
-            return None
+            return False
         except BadSignature:
             """When token is invalid """
-            return None
+            return False
         user = User.query.get(data["id"])
         return user
 
