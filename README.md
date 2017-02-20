@@ -98,7 +98,7 @@ append **api/v1.0/register**  to the tail end of the link. i.e:
 
 ***Set it by checking on the raw checkbox and clicking on application/json on the text drop down***
 
-![Demo Image](/docs/img/register.png?raw=true)
+![Demo Image](/docs/img/Register.png?raw=true)
 
 A successful registeration should return the new user's username, i.e.
 
